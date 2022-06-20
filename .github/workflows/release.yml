@@ -20,13 +20,14 @@ jobs:
           curl -sSL https://install.python-poetry.org | python3 -
       - name: Get poetry release
         run: |
-          RELEASE_VER=$(poetry version | cut -d ' ' -f 2)
-          echo "RELEASE_VER=${RELEASE_VER}" >> $GITHUB_ENV
+          RELEASE_VERSION=$(poetry version | cut -d ' ' -f 2)
+          echo "RELEASE_VERSION=${RELEASE_VERSION}" >> $GITHUB_ENV
+          echo "RELEASE_TAG=v${RELEASE_VERSION}" >> $GITHUB_ENV
       - id: release
         uses: rymndhng/release-on-push-action@master
         with:
           bump_version_scheme: minor
-          release_name: "Release ${{ env.RELEASE_VER }}"
+          release_name: "Release ${{ env.RELEASE_VERSION }}"
           release_body: "Additional Release Info"
       - name: Check Output Parameters
         run: |
