@@ -21,13 +21,12 @@ jobs:
       - name: Get poetry release
         run: |
           RELEASE_VER=$(poetry version | cut -d ' ' -f 2)
-          export RELEASE_VER=${RELEASE_VER}
-          echo "::set-env name=RELEASE_VER::$RELEASE_VER"
+          echo "RELEASE_VER=${RELEASE_VER}" >> $GITHUB_ENV
       - id: release
         uses: rymndhng/release-on-push-action@master
         with:
           bump_version_scheme: minor
-          release_name: "Release ${RELEASE_VER}"
+          release_name: "Release ${{ env.RELEASE_VER }}"
           release_body: "Additional Release Info"
       - name: Check Output Parameters
         run: |
