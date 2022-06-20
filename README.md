@@ -1,8 +1,8 @@
-# Pytest JSON Report
+# Pytest jtr JSON Test Report
 
-[![CI](https://github.com/numirias/pytest-json-report/actions/workflows/main.yml/badge.svg)](https://github.com/numirias/pytest-json-report/actions/workflows/main.yml)
-[![PyPI Version](https://img.shields.io/pypi/v/pytest-json-report.svg)](https://pypi.python.org/pypi/pytest-json-report)
-[![Python Versions](https://img.shields.io/pypi/pyversions/pytest-json-report.svg)](https://pypi.python.org/pypi/pytest-json-report)
+[![CI](https://github.com/Gleams-Machine/pytest-jtr/actions/workflows/main.yml/badge.svg)](https://github.com/Gleams-Machine/pytest-jtr/actions/workflows/main.yml)
+
+Forked from [numirias/pytest-json-report](https://github.com/numirias/pytest-json-report)
 
 This pytest plugin creates test reports as JSON. This makes it easy to process test results in other applications.
 
@@ -144,7 +144,7 @@ You can use the plugin when invoking `pytest.main()` directly from code:
 
 ```python
 import pytest
-from pytest_jsonreport.plugin import JSONReport
+from pytest_jtr.plugin import JSONReport
 
 plugin = JSONReport()
 pytest.main(['--json-report-file=none', 'test_foo.py'], plugins=[plugin])

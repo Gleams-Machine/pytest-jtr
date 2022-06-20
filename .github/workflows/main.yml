@@ -2,9 +2,11 @@ name: CI
 
 on:
   push:
-    branches: [ master ]
-  pull_request:
-    branches: [ master ]
+    branches:
+      - '**'  # Every branch
+  #pull_request:
+  #  branches:
+  #     - '**'  # Every branch
   workflow_dispatch:
 
 jobs:
@@ -12,28 +14,34 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ['3.7', '3.8', '3.9', '3.10']
+        python-version: ['3.9', '3.10']
     steps:
       - uses: actions/checkout@v2
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v2
         with:
           python-version: ${{ matrix.python-version }}
-      - name: Set up tox
+      - name: Install poetry
         run: |
-          pip install --upgrade pip tox
-      - name: Run tox
+          curl -sSL https://install.python-poetry.org | python3 -
+      - name: Install nox
         run: |
-          tox -e py
-  lint:
+          poetry install
+      - name: Run tests in nox via poetry
+        run: |
+          poetry run nox -e tests
+  static:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - name: Set up Python
         uses: actions/setup-python@v2
-      - name: Set up tox
+      - name: Install poetry
         run: |
-          pip install --upgrade pip tox
-      - name: Run tox
+          curl -sSL https://install.python-poetry.org | python3 -
+      - name: Install nox
         run: |
-          tox -e lint
+          poetry install
+      - name: Run Static Code Analysers in nox via poetry
+        run: |
+          poetry run nox -e static
