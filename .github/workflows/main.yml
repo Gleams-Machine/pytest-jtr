@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ['3.9', '3.10', '3.11']
+        python-version: ['3.9', '3.10']
     steps:
       - uses: actions/checkout@v2
       - name: Set up Python ${{ matrix.python-version }}
@@ -24,10 +24,10 @@ jobs:
       - name: Install poetry
         run: |
           curl -sSL https://install.python-poetry.org | python3 -
-      - name: Run tox via poetry
+      - name: Run tests in nox via poetry
         run: |
-          poetry run tox -e py
-  lint:
+          poetry run nox -e tests
+  static:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -36,6 +36,6 @@ jobs:
       - name: Install poetry
         run: |
           curl -sSL https://install.python-poetry.org | python3 -
-      - name: Run tox via poetry
+      - name: Run Static Code Analysers in nox via poetry
         run: |
-          poetry run tox -e lint
+          poetry run nox -e static

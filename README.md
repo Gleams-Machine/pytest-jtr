@@ -144,7 +144,7 @@ You can use the plugin when invoking `pytest.main()` directly from code:
 
 ```python
 import pytest
-from pytest_jsonreport.plugin import JSONReport
+from pytest_jtr.plugin import JSONReport
 
 plugin = JSONReport()
 pytest.main(['--json-report-file=none', 'test_foo.py'], plugins=[plugin])

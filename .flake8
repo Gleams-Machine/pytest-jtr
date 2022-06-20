@@ -1,0 +1,11 @@
+[flake8]
+ignore = D203
+exclude =
+    .git,
+    .nox,
+    .venv,
+    __pycache__,
+    .pytest_cache,
+    dist
+max-complexity = 12
+max-line-length = 90

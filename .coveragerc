@@ -1,8 +1,3 @@
 [run]
-branch = True
-source = pytest_jsonreport
-
-[paths]
-source =
-   pytest_jsonreport
-   .tox/*/lib/python*/site-packages/pytest_jsonreport
+omit = *tests*
+parallel = True
