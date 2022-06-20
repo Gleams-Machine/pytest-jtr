@@ -15,6 +15,6 @@ jobs:
           bump_version_scheme: minor
           release_body: "Additional Release Info"
       - name: Check Output Parameters
-          run: |
-            echo "Got tag name ${{ steps.release.outputs.tag_name }}"
-            echo "Got release version ${{ steps.release.outputs.version }}"
+        run: |
+          echo "Got tag name ${{ steps.release.outputs.tag_name }}"
+          echo "Got release version ${{ steps.release.outputs.version }}"
