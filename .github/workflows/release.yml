@@ -5,11 +5,20 @@ on:
 
 jobs:
   release-on-push:
+    # if: ${{ contains(github.event.label.name, 'preminor') }}
     runs-on: ubuntu-latest
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
-      - name: Bump poetry release
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v3
+      - name: Install pip
+        run: |
+          python -m pip install --upgrade pip
+      - name: Install poetry
+        run: |
+          curl -sSL https://install.python-poetry.org | python3 -
+      - name: Get poetry release
         run: |
           RELEASE_VER=$(poetry version | cut -d ' ' -f 2)
       - id: release
