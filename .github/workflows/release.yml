@@ -9,10 +9,14 @@ jobs:
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
+      - name: Bump poetry release
+        run: |
+          RELEASE_VER=$(poetry version | cut -d ' ' -f 2)
       - id: release
         uses: rymndhng/release-on-push-action@master
         with:
           bump_version_scheme: minor
+          release_name: "Release " + ${RELEASE_VER}
           release_body: "Additional Release Info"
       - name: Check Output Parameters
         run: |
