@@ -21,6 +21,8 @@ jobs:
       - name: Get poetry release
         run: |
           RELEASE_VER=$(poetry version | cut -d ' ' -f 2)
+          export RELEASE_VER=${RELEASE_VER}
+          echo "::set-env name=RELEASE_VER::$RELEASE_VER"
       - id: release
         uses: rymndhng/release-on-push-action@master
         with:
