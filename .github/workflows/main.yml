@@ -34,12 +34,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: excitedleigh/setup-nox@v2.0.0
       - name: Set up Python
         uses: actions/setup-python@v2
       - name: Install poetry
         run: |
           curl -sSL https://install.python-poetry.org | python3 -
+      - name: Install nox
+        run: |
+          poetry install
       - name: Run Static Code Analysers in nox via poetry
         run: |
           poetry run nox -e static
