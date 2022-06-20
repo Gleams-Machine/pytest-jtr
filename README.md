@@ -458,6 +458,14 @@ A list of warnings that occurred during the session. (See the [pytest docs on wa
 ]
 ```
 
+## Release
+
+Add one of the following tags to the PR:
+
+- release:major
+- release:minor
+- release:patch 
+
 ## Related tools
 
 - [pytest-json](https://github.com/mattcl/pytest-json) has some great features but appears to be unmaintained. I borrowed some ideas and test cases from there.
