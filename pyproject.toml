@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "pytest-jtr"
-version = "0.1.1"
+version = "1.0.1"
 description = ""
 authors = ["Gleams API user <Stephen.Swannell+ghapi@gmail.com>"]
 license = "MIT"
