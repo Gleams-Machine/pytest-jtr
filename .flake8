@@ -8,4 +8,4 @@ exclude =
     .pytest_cache,
     dist
 max-complexity = 12
-max-line-length = 90
+max-line-length = 95
