@@ -4,7 +4,7 @@
 
 Forked from [numirias/pytest-json-report](https://github.com/numirias/pytest-json-report)
 
-This pytest plugin creates test reports as JSON. This makes it easy to process test results in other applications.
+This pytest plugin creates test reports as JSON files. This can make it easier to process test results in other applications.
 
 It can report a summary, test details, captured output, logs, exception tracebacks and more. Additionally, you can use the available fixtures and hooks to [add metadata](#metadata) and [customize](#modifying-the-report) the report as you like.
 
@@ -29,7 +29,13 @@ It can report a summary, test details, captured output, logs, exception tracebac
 ## Installation
 
 ```
-pip install pytest-json-report --upgrade 
+
+pip install pytest-jtr
+
+# or
+
+poetry add pytest-jtr
+
 ```
 
 ## Options
@@ -457,17 +463,3 @@ A list of warnings that occurred during the session. (See the [pytest docs on wa
     }
 ]
 ```
-
-## Release
-
-Add one of the following tags to the PR:
-
-- release:major
-- release:minor
-- release:patch 
-
-## Related tools
-
-- [pytest-json](https://github.com/mattcl/pytest-json) has some great features but appears to be unmaintained. I borrowed some ideas and test cases from there.
-
-- [tox has a switch](http://tox.readthedocs.io/en/latest/example/result.html) to create a JSON report including a test result summary. However, it just provides the overall outcome without any per-test details.
