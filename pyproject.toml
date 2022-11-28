@@ -24,7 +24,7 @@ tox = "^3.25.0"
 nox = "^2022.1.7"
 nox-poetry = "^1.0.0"
 bandit = "^1.7.4"
-safety = "^1.10.3"
+safety = "^2.3.3"
 black = "^22.3.0"
 isort = "^5.10.1"
 flake8 = "^4.0.1"
@@ -32,8 +32,10 @@ mypy = "^0.961"
 coverage = "^6.4.1"
 
 [build-system]
-requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
+requires = [
+  "poetry-core>=1",
+]
 
 [tool.poetry.scripts]
 prep-dev-release = "scripts.prep_release:dev"
@@ -41,3 +43,8 @@ prep-patch-release = "scripts.release_process:prep_patch"
 prep-minor-release = "scripts.release_process:prep_minor"
 prep-major-release = "scripts.release_process:prep_major"
 release = "scripts.release_process:upload_release"
+
+[tool.bandit]
+exclude_dirs = ["tests", "scripts", "noxfile.py"]
+tests = []
+skips = ["B101","B506"]

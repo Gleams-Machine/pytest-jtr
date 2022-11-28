@@ -1,4 +1,5 @@
 import subprocess
+
 from rich.console import Console
 
 console = Console()
@@ -17,7 +18,9 @@ def _run_tests():
         cmd = ["nox", "-s", "tests"]
         result = subprocess.run(cmd, capture_output=True, text=True)
         if result.returncode:
-            console.print("[bold red] :broken_heart: Tests have failed. Please investigate")
+            console.print(
+                "[bold red] :broken_heart: Tests have failed. Please investigate"
+            )
             console.print(result.stdout)
             console.print(result.stderr)
             exit(result.returncode)
@@ -32,7 +35,9 @@ def _run_static_checks():
         result = subprocess.run(cmd, capture_output=True, text=True)
         if result.returncode:
             console.print(result.returncode)
-            console.print("[bold red] :broken_heart: Checks have failed. Please investigate")
+            console.print(
+                "[bold red] :broken_heart: Checks have failed. Please investigate"
+            )
             console.print(result.stdout)
             console.print(result.stderr)
             exit(result.returncode)
