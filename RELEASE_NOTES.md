@@ -1,5 +1,9 @@
 # Release Notes
 
+## v1.1.1
+
+- Resolve dependency version issue
+
 ## v1.1.0
 
 - Include cov_markers attribute in test collection report. 
