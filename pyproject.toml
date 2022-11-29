@@ -30,7 +30,6 @@ isort = "^5.10.1"
 flake8 = "^4.0.1"
 mypy = "^0.961"
 coverage = "^6.4.1"
-wheel = "0.38.1"
 
 [build-system]
 build-backend = "poetry.core.masonry.api"
