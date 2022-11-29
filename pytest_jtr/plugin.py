@@ -1,5 +1,3 @@
-from __future__ import print_function
-
 import json
 import logging
 import os
@@ -106,9 +104,7 @@ class JSONReportBase:
         if "metadata" not in item._json_report_extra:
             return
         if not serialize.serializable(item._json_report_extra["metadata"]):
-            warnings.warn(
-                "Metadata of {} is not JSON-serializable.".format(item.nodeid)
-            )
+            warnings.warn(f"Metadata of {item.nodeid} is not JSON-serializable.")
             del item._json_report_extra["metadata"]
 
     def _must_omit(self, key):
@@ -193,9 +189,7 @@ class JSONReport(JSONReportBase):
             if serialize.serializable(user_properties):
                 json_testitem["user_properties"] = user_properties
             else:
-                warnings.warn(
-                    "User properties of {} are not JSON-serializable.".format(nodeid)
-                )
+                warnings.warn(f"User properties of {nodeid} are not JSON-serializable.")
 
         # Update total test outcome, if necessary. The total outcome can be
         # different from the outcome of the setup/call/teardown stage.
@@ -256,9 +250,9 @@ class JSONReport(JSONReportBase):
             try:
                 self.save_report(path)
             except OSError as e:
-                self._terminal_summary = "could not save report: {}".format(e)
+                self._terminal_summary = f"could not save report: {e}"
             else:
-                self._terminal_summary = "report saved to: {}".format(path)
+                self._terminal_summary = f"report saved to: {path}"
         else:
             self._terminal_summary = "report auto-save skipped"
             self._terminal_min_verbosity = 1
@@ -275,7 +269,7 @@ class JSONReport(JSONReportBase):
         if dirname:
             try:
                 os.makedirs(dirname)
-            # Mimick FileExistsError for py2.7 compatibility
+            # Mimic FileExistsError for py2.7 compatibility
             except OSError as e:
                 import errno  # pylint: disable=import-outside-toplevel
 

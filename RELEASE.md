@@ -6,7 +6,7 @@
 
 - [x] All test pass: ```nox -s tests```
 - [x] All static code checks pass: ```nox -s static```
-- [x] Update to relevant next version: 
+- [x] Update to relevant next version:
 ```
 poetry run prep-dev-release # increase dev version
 poetry run prep-patch-release # increase patch version

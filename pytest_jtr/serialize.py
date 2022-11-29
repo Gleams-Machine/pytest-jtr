@@ -36,6 +36,10 @@ def make_collectitem(item):
         "type": item.__class__.__name__,
     }
     try:
+        json_item["cov_markers"] = item.cov_markers
+    except (TypeError, AttributeError):
+        json_item["cov_markers"] = {}
+    try:
         location = item.location
     except AttributeError:
         pass
