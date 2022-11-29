@@ -1,12 +1,28 @@
+import json
 import logging
 import os.path
 import sys
+from typing import Dict, List
 
 import pytest
 
 from pytest_jtr.plugin import JSONReport
 
 from .conftest import FILE, tests_only
+
+
+def match_collected_test_cov_markers(
+    *, report: List, testname: str, expected_markers: Dict
+):
+    matched = False
+    collection_reports = report.get("collectors", [])
+    for collection_report in collection_reports:
+        results = collection_report.get("result", [])
+        for result in results:
+            if testname in result.get("nodeid", ""):
+                assert result.get("cov_markers", {}) == expected_markers
+                matched = True
+    return matched
 
 
 def test_arguments_in_help(misc_testdir):
@@ -101,6 +117,7 @@ def test_report_collectors(num_processes, make_json):
             {
                 "nodeid": "test_report_collectors.py",
                 "type": "Module",
+                "cov_markers": {},
             }
         ],
     }
@@ -108,6 +125,7 @@ def test_report_collectors(num_processes, make_json):
         "nodeid": "test_report_collectors.py::test_pass",
         "type": "Function",
         "lineno": 25,
+        "cov_markers": {},
     } in collectors[1]["result"]
 
 
@@ -697,3 +715,47 @@ def test_bug_75(make_json, num_processes):
     assert data["exitcode"] == 1
     assert data["summary"]["passed"] == 9
     assert data["summary"]["failed"] == 1
+
+
+def test_log_skipped_tests(testdir):
+    testdir.makepyfile(
+        """
+        import pytest
+
+        @pytest.mark.skip
+        def test_is_skipped():
+            pass
+        """
+    )
+    testdir.runpytest("-vv", "--json-report")
+    with open(str(testdir.tmpdir / ".report.json")) as f:
+        data = json.load(f)
+    assert data.get("tests") != []
+
+
+def test_log_collected_tests(testdir):
+    testdir.makepyfile(
+        """
+        import pytest
+
+        def test_one():
+            pass
+
+        def test_two():
+            pass
+
+        def test_three():
+            pass
+        """
+    )
+    testdir.runpytest("-vv", "--json-report", "--collect-only")
+    with open(str(testdir.tmpdir / ".report.json")) as f:
+        report = json.load(f)
+    assert report.get("tests") == []
+
+    testnames = ["test_one", "test_two", "test_three"]
+    for testname in testnames:
+        match = match_collected_test_cov_markers(
+            report=report, testname=testname, expected_markers={}
+        )
+        assert match

@@ -39,7 +39,7 @@ def bandit(session):
 
 @session(python=["3.8", "3.9", "3.10"])
 def safety(session):
-    session.run("safety", "check")
+    session.run("safety", "check", "--ignore=51457")
 
 
 @session(python=["3.8", "3.9", "3.10"])
@@ -57,6 +57,5 @@ def static(session):
     session.notify("isort")
     session.notify("flake8")
     session.notify("bandit")
-    session.notify("safety")
     session.notify("black")
     session.notify("mypy")

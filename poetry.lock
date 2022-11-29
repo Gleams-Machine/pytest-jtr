@@ -730,7 +730,7 @@ dev = ["pytest (>=4.6.2)", "black (>=19.3b0)"]
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.8,<3.11.0"
-content-hash = "e15a0c2f390eafb5ecf1c950fa26004877d5ce0c2477134c790be209931908fe"
+content-hash = "3de7e45bb6c608ef81dca20d59961ff871655b640bfda309a98b12c367333180"
 
 [metadata.files]
 argcomplete = []
