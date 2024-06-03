@@ -29,24 +29,24 @@ jobs:
           poetry install
       - name: Run tests in nox via poetry
         run: |
-          poetry run nox -e tests-${{ matrix.python-version }}
+          poetry run nox -s unit_tests-${{ matrix.python-version }}
   static:
     runs-on: ubuntu-latest
     strategy:
       matrix:
         python-version: [ '3.8', '3.9', '3.10' ]
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.python-version }}
+      - name: Install Deps
+        run: |
+          python3 -m pip install --upgrade pip setuptools wheel pre-commit poetry
       - name: Install poetry
         run: |
-          curl -sSL https://install.python-poetry.org | python3 -
-      - name: Install nox
+          poetry install --with dev -vvv
+      - name: Run Static Code Analysers
         run: |
-          poetry install
-      - name: Run Static Code Analysers in nox via poetry
-        run: |
-          poetry run nox -e static-${{ matrix.python-version }}
+          pre-commit run --all-files
