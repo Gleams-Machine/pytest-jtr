@@ -1,6 +1,7 @@
 """Functions for making test data JSON-serializable.
 
 """
+
 import json
 from collections import Counter
 
