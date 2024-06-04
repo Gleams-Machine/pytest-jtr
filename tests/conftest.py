@@ -171,10 +171,10 @@ def diff(a, b, path=None):
     # with and without workers
     if path and path[-1] != "longrepr":
         return
-    if type(a) != type(b):
+    if not isinstance(a, type(b)):
         yield ("T", path, a, b)
         return
-    if type(a) == dict:
+    if isinstance(a, dict):
         a_keys = sorted(a.keys())
         b_keys = sorted(b.keys())
         if a_keys != b_keys:
@@ -183,7 +183,7 @@ def diff(a, b, path=None):
         for ak, bk in zip(a_keys, b_keys):
             yield from diff(a[ak], b[bk], path + [str(ak)])
         return
-    if type(a) == list:
+    if isinstance(a, list):
         for i, (ai, bi) in enumerate(zip(a, b)):
             yield from diff(ai, bi, path + [str(i)])
         return
