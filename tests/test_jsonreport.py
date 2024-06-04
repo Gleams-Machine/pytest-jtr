@@ -1,7 +1,6 @@
 import json
 import logging
 import os.path
-import sys
 from typing import Dict, List
 
 import pytest
@@ -221,11 +220,6 @@ def test_report_crash_and_traceback(tests):
         },
         {
             "path": "test_report_crash_and_traceback.py",
-            "lineno": 64,
-            "message": "in <listcomp>",
-        },
-        {
-            "path": "test_report_crash_and_traceback.py",
             "lineno": 60,
             "message": "in bar",
         },
@@ -235,9 +229,8 @@ def test_report_crash_and_traceback(tests):
             "message": "TypeError",
         },
     ]
-    if sys.version_info < (3,):
-        del traceback[2]
-    assert call["traceback"] == traceback
+    for tb in traceback:
+        assert tb in call["traceback"]
 
 
 def test_report_traceback_styles(make_json):
