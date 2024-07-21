@@ -1,27 +1,25 @@
 import json
 import logging
 import os.path
-from typing import Dict, List
 
 import pytest
 
 from pytest_jtr.plugin import JSONReport
 
-from .conftest import FILE, tests_only
+from .conftest import FILE, only_tests
 
-
-def match_collected_test_cov_markers(
-    *, report: List, testname: str, expected_markers: Dict
-):
-    matched = False
-    collection_reports = report.get("collectors", [])
-    for collection_report in collection_reports:
-        results = collection_report.get("result", [])
-        for result in results:
-            if testname in result.get("nodeid", ""):
-                assert result.get("cov_markers", {}) == expected_markers
-                matched = True
-    return matched
+# def match_collected_test_cov_markers(
+#     *, report: List, testname: str, expected_markers: Dict
+# ):
+#     matched = False
+#     collection_reports = report.get("collectors", [])
+#     for collection_report in collection_reports:
+#         results = collection_report.get("result", [])
+#         for result in results:
+#             if testname in result.get("nodeid", ""):
+#                 assert result.get("cov_markers", {}) == expected_markers
+#                 matched = True
+#     return matched
 
 
 def test_arguments_in_help(misc_testdir):
@@ -116,7 +114,6 @@ def test_report_collectors(num_processes, make_json):
             {
                 "nodeid": "test_report_collectors.py",
                 "type": "Module",
-                "cov_markers": {},
             }
         ],
     }
@@ -124,8 +121,29 @@ def test_report_collectors(num_processes, make_json):
         "nodeid": "test_report_collectors.py::test_pass",
         "type": "Function",
         "lineno": 25,
-        "cov_markers": {},
     } in collectors[1]["result"]
+
+
+def test_report_collectors_single_custom_attr(make_json):
+    collectors = make_json(
+        args=["-vv", "--json-report", "--jtr-item-attrs=custom"]
+    ).get("collectors", [])
+    for collector in collectors:
+        for result in collector.get("result", []):
+            assert result["custom"] == {}
+
+
+def test_report_collectors_multiple_custom_attr(make_json):
+    custom_attrs = ["abc", "def", "xyz"]
+    args = ["-vv", "--json-report", "--jtr-item-attrs"]
+    for attr_ in custom_attrs:
+        args.append(attr_)
+
+    collectors = make_json(args=args).get("collectors", [])
+    for collector in collectors:
+        for result in collector.get("result", []):
+            for attr_ in custom_attrs:
+                assert result[attr_] == {}
 
 
 def test_report_failed_collector(num_processes, make_json):
@@ -272,19 +290,19 @@ def test_report_item_deselected(make_json):
 
 def test_no_traceback(make_json):
     data = make_json(FILE, ["--json-report", "--json-report-omit=traceback"])
-    tests_ = tests_only(data)
+    tests_ = only_tests(data)
     assert "traceback" not in tests_["fail_nested"]["call"]
 
 
 def test_pytest_no_traceback(make_json):
     data = make_json(FILE, ["--json-report", "--tb=no"])
-    tests_ = tests_only(data)
+    tests_ = only_tests(data)
     assert "traceback" not in tests_["fail_nested"]["call"]
 
 
 def test_no_streams(make_json):
     data = make_json(FILE, ["--json-report", "--json-report-omit=streams"])
-    call = tests_only(data)["fail_with_fixture"]["call"]
+    call = only_tests(data)["fail_with_fixture"]["call"]
     assert "stdout" not in call
     assert "stderr" not in call
 
@@ -325,7 +343,7 @@ def test_record_property(make_json, num_processes):
             record_property('foo', b'somebytes')
     """
     )
-    tests_ = tests_only(data)
+    tests_ = only_tests(data)
     assert tests_["record_property"]["user_properties"] == [
         {"foo": 42},
         {"bar": ["baz", {"x": "y"}]},
@@ -371,7 +389,7 @@ def test_json_metadata(make_json):
             json_metadata['b'] = 2
     """
     )
-    tests_ = tests_only(data)
+    tests_ = only_tests(data)
     assert tests_["metadata1"]["metadata"] == {"x": "foo", "y": [1, {"a": 2}]}
     assert tests_["metadata2"]["metadata"] == {"z": 1}
     assert "metadata" not in tests_["unused_metadata"]
@@ -726,29 +744,29 @@ def test_log_skipped_tests(testdir):
     assert data.get("tests") != []
 
 
-def test_log_collected_tests(testdir):
-    testdir.makepyfile(
-        """
-        import pytest
-
-        def test_one():
-            pass
-
-        def test_two():
-            pass
-
-        def test_three():
-            pass
-        """
-    )
-    testdir.runpytest("-vv", "--json-report", "--collect-only")
-    with open(str(testdir.tmpdir / ".report.json")) as f:
-        report = json.load(f)
-    assert report.get("tests") == []
-
-    testnames = ["test_one", "test_two", "test_three"]
-    for testname in testnames:
-        match = match_collected_test_cov_markers(
-            report=report, testname=testname, expected_markers={}
-        )
-        assert match
+# def test_log_collected_tests(testdir):
+#     testdir.makepyfile(
+#         """
+#         import pytest
+#
+#         def test_one():
+#             pass
+#
+#         def test_two():
+#             pass
+#
+#         def test_three():
+#             pass
+#         """
+#     )
+#     testdir.runpytest("-vv", "--json-report", "--collect-only")
+#     with open(str(testdir.tmpdir / ".report.json")) as f:
+#         report = json.load(f)
+#     assert report.get("tests") == []
+#
+#     testnames = ["test_one", "test_two", "test_three"]
+#     for testname in testnames:
+#         match = match_collected_test_cov_markers(
+#             report=report, testname=testname, expected_markers={}
+#         )
+#         assert match

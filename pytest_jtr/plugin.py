@@ -401,6 +401,13 @@ def pytest_addoption(parser):
         type=int,
         help="set verbosity (default is " "value of --verbosity)",
     )
+    group.addoption(
+        "--jtr-item-attrs",
+        default=[""],
+        dest="item_attrs",
+        nargs="+",
+        help="list of attributes on a test item to record when collecting items",
+    )
 
 
 def pytest_configure(config):

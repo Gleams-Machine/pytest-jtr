@@ -32,9 +32,9 @@ mypy = "^0.961"
 coverage = "^6.4.1"
 
 [tool.poetry.group.dev.dependencies]
-black = ">24.3.0"
 importlib-metadata = "<5.0"
 flake8 = "^7.0.0"
+black = "^24.4.2"
 
 [build-system]
 build-backend = "poetry.core.masonry.api"
