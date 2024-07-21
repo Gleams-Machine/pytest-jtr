@@ -36,10 +36,14 @@ def make_collectitem(item):
         "nodeid": item.nodeid,
         "type": item.__class__.__name__,
     }
-    try:
-        json_item["cov_markers"] = item.cov_markers
-    except (TypeError, AttributeError):
-        json_item["cov_markers"] = {}
+
+    if item_attrs := item.config.getoption("item_attrs"):
+        for item_attr in item_attrs:
+            if item_attr:
+                try:
+                    json_item[item_attr] = item.item_attr
+                except (TypeError, AttributeError):
+                    json_item[item_attr] = {}
     try:
         location = item.location
     except AttributeError:

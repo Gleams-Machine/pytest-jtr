@@ -96,10 +96,10 @@ def json_data(make_json):
 
 @pytest.fixture
 def tests(json_data):
-    return tests_only(json_data)
+    return only_tests(json_data)
 
 
-def tests_only(json_data):
+def only_tests(json_data):
     return {test["nodeid"].split("::")[-1][5:]: test for test in json_data["tests"]}
 
 
